@@ -1,8 +1,6 @@
 employment_data <- read.csv('Employment.csv', header = TRUE)
-View(employment_data)
 
 unemployment_data <- read.csv('Unemployment.csv', header = TRUE)
-View(unemployment_data)
 
 udata <- data.frame(year = character(0), month = character(0), unemployment = numeric(0), 
                     employment = numeric(0), ratio = numeric(0))
@@ -16,12 +14,15 @@ for (i in 1:65) {
 }
 colnames(udata) <- c('Year', 'Month', 'Unemployment', 'Employment', 'U/E Ratio')
 
-udata$P_Year <- ifelse(udata$Year %% 4 == 2, TRUE, FALSE)
-udata$SH_Year <- ifelse(udata$Year %% 2 == 0, TRUE, FALSE)
+udata$UE_Delta <- c(NA, diff(udata$`U/E Ratio`))
+udata$UE_DeltaPer <- udata$UE_Delta * 100
+udata$P_Year <- udata$Year %% 4
+udata$P_Flag <- ifelse(udata$Year %% 4 == 2, TRUE, FALSE)
+udata$SH_Flag <- ifelse(udata$Year %% 2 == 0, TRUE, FALSE)
 
 udata
 
-write.csv(udata, 'Unemployment_ts.csv', row.names = FALSE)
-
+write.csv(udata, 'Unemployment_ts.csv', row.names = TRUE)
+  
 
 
